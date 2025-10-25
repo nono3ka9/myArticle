@@ -1,0 +1,12 @@
+<div class="container mt-4 mb-5">
+  <% content_for :title, "新しい記事" %>
+
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h4 mb-0">新しい記事</h1>
+    <div>
+      <%= link_to "一覧に戻る", articles_path, class: "btn btn-outline-secondary btn-sm" %>
+    </div>
+  </div>
+
+  <%= render "form", article: @article %>
+</div>

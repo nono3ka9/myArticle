@@ -1,0 +1,35 @@
+ja:
+  activerecord:
+    models:
+      article: 記事
+    attributes:
+      article:
+        title: タイトル
+        body: 本文
+        summary: 要約
+
+  date:
+    formats:
+      default: "%Y/%m/%d"
+      short: "%m/%d"
+      long: "%Y年%m月%d日(%a)"
+
+  time:
+    formats:
+      default: "%Y年%m月%d日(%a) %H:%M"
+      short: "%Y/%m/%d %H:%M"
+      long: "%Y年%m月%d日(%a) %H時%M分"
+
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      blank: "を入力してください"
+
+  helpers:
+    submit:
+      create: "%{model}を作成しました"
+      update: "%{model}を更新しました"
+
+  notices:
+    create: "%{model}が正常に作成されました。"
+    update: "%{model}が正常に更新されました。"

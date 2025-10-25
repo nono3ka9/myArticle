@@ -1,0 +1,15 @@
+#サーバー起動
+bin/rails s
+
+#サーバー起動後確認
+http://127.0.0.1:3000
+
+#ネットで下記を開く
+http://127.0.0.1:3000/articles
+
+#psql
+psql -h localhost -U noakageyama -d my_article_development
+
+
+#コマンド機能
+command + pでフォルダ＆ファイル検索
