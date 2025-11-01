@@ -1,0 +1,11 @@
+<li class="border-b py-2">
+  <div class="text-sm text-gray-600"><%= h(comment.commenter) %></div>
+  <div class="whitespace-pre-wrap"><%= simple_format(h(comment.body)) %></div>
+  <div class="text-xs text-gray-500 mt-1">
+    <%= l(comment.created_at, format: :short) %>
+    <!-- 削除ボタン（当面は誰でも可能。次回Devise後に制御） -->
+    <%= link_to "削除", [comment.article, comment],
+                data: { turbo_method: :delete, turbo_confirm: "削除しますか？" },
+                class: "text-red-600 ml-2" %>
+  </div>
+</li>
