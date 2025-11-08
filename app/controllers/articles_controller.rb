@@ -4,11 +4,13 @@ class ArticlesController < ApplicationController
 
   # GET /articles or /articles.json
   def index
-    @articles = Article.all
+    @articles = Article.order(created_at: :desc)
   end
 
   # GET /articles/1 or /articles/1.json
   def show
+    @article = Article.find(params[:id])
+    @comment = @article.comments.build
   end
 
   # GET /articles/new
@@ -56,7 +58,11 @@ class ArticlesController < ApplicationController
     @article.destroy!
 
     respond_to do |format|
-      format.html { redirect_to articles_path, notice: "Article was successfully destroyed.", status: :see_other }
+      format.html do
+        redirect_to articles_path,
+                    notice: I18n.t('notices.destroy', model: Article.model_name.human),
+                    status: :see_other
+      end
       format.json { head :no_content }
     end
   end

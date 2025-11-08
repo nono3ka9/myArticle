@@ -10,6 +10,16 @@ http://127.0.0.1:3000/articles
 #psql
 psql -h localhost -U noakageyama -d my_article_development
 
+SELECT * FROM articles;
+
+#切る
+\q
 
 #コマンド機能
 command + pでフォルダ＆ファイル検索
+
+
+#GitHubーpush方法
+git add .
+git commit -m "何をしたか書く"
+git push origin main

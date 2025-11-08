@@ -2,14 +2,6 @@
 
   <% provide :title, "記事詳細｜#{@article.title}" %>
   
-  <%# --- 通知（inline style を廃止） --- %>
-  <% if notice.present? %>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <%= notice %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
-    </div>
-  <% end %>
-
   <%# --- 記事本文：カード化 --- %>
   <div class="card mb-4">
     <div class="card-body">
@@ -20,7 +12,7 @@
   <%# --- コメント見出し（件数バッジ） --- %>
   <div class="d-flex align-items-center justify-content-between mb-2">
     <h2 class="h5 mb-0">
-      コメント <span class="badge bg-secondary"><%= @article.comments.size %></span>
+      コメント <span class="badge bg-secondary"><%= @article.comments.count %></span>
     </h2>
   </div>
 
@@ -52,7 +44,21 @@
   <div class="card mb-4">
     <div class="card-header">新しいコメント</div>
     <div class="card-body">
-      <%= form_with(model: [@article, @article.comments.build]) do |f| %>
+
+      <%# ▼ バリデーションエラー表示 %>
+      <% if @comment && @comment.errors.any? %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>入力エラーがあります：</strong>
+          <ul class="mb-0">
+            <% @comment.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
+
+      <%= form_with(model: [@article, @comment]) do |f| %>
         <div class="mb-3">
           <%= f.label :commenter, "お名前", class: "form-label" %>
           <%= f.text_field :commenter, class: "form-control", placeholder: "例）山田太郎" %>

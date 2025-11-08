@@ -25,22 +25,27 @@
       <div class="container">
         <%= link_to "記事管理アプリ", articles_path, class: "navbar-brand fw-bold" %>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        <button id="navbarToggler" class="navbar-toggler collapsed" type="button"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto align-items-center">
+        <!-- ▼ スマホ：中央寄せ / PC：右寄せ -->
+        <div class="collapse navbar-collapse justify-content-center justify-content-lg-end text-center" id="navbarNav">
+          <ul class="navbar-nav align-items-center gap-3 mt-3 mt-lg-0">
             <% if user_signed_in? %>
-              <li class="nav-item me-2 text-secondary small"><%= current_user.email %></li>
-              <li class="nav-item me-3">
-                <%= link_to new_article_path, class: "btn btn-outline-primary" do %>
+              <li class="nav-item text-secondary small"><%= current_user.email %></li>
+              <li class="nav-item">
+                <%= link_to new_article_path, class: "btn btn-outline-primary w-100 w-lg-auto" do %>
                   <i class="bi bi-plus-lg"></i> 新規作成
                 <% end %>
               </li>
               <li class="nav-item">
-                <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-outline-secondary" %>
+                <%= link_to destroy_user_session_path,
+                            data: { turbo_method: :delete },
+                            class: "btn btn-outline-secondary w-100 w-lg-auto" do %>
+                  <i class="bi bi-box-arrow-right"></i> ログアウト
+                <% end %>
               </li>
             <% end %>
           </ul>
@@ -50,8 +55,8 @@
 
     <div class="container mt-3">
       <% flash.each do |key, message| %>
-        <% bs_class = key == "notice" ? "alert-success" : "alert-danger" %>
-        <div class="alert <%= bs_class %> alert-dismissible fade show" role="alert">
+        <% next if message.blank? %>
+        <div class="alert <%= (key.to_s == 'notice') ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show" role="alert">
           <%= message %>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -63,5 +68,31 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Turboでキャッシュされる直前は必ず閉じる
+      document.addEventListener("turbo:before-cache", function () {
+        var menu = document.getElementById("navbarNav");
+        var btn  = document.getElementById("navbarToggler");
+        if (!menu || !btn) return;
+        menu.classList.remove("show");
+        btn.classList.add("collapsed");
+        btn.setAttribute("aria-expanded", "false");
+      });
+
+      // ページ表示ごとに純JSで開閉を制御（BootstrapのCollapseは使わない）
+      document.addEventListener("turbo:load", function () {
+        var menu = document.getElementById("navbarNav");
+        var btn  = document.getElementById("navbarToggler");
+        if (!menu || !btn) return;
+
+        // 二重登録を避けつつクリックで開閉
+        btn.onclick = function () {
+          var willOpen = !menu.classList.contains("show");
+          menu.classList.toggle("show", willOpen);
+          btn.classList.toggle("collapsed", !willOpen);
+          btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+        };
+      });
+    </script>
   </body>
 </html>
