@@ -23,3 +23,6 @@ command + pでフォルダ＆ファイル検索
 git add .
 git commit -m "何をしたか書く"
 git push origin main
+
+#Internal Database URL
+postgresql://article_db_492h_user:a913gkpipCsUy8tWZgavp3GjWD3OLW11@dpg-d47f7fkhg0os73fl283g-a/article_db_492h

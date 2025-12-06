@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "myArticle",
+			"path": "."
+		},
+		{
+			"name": "app",
+			"path": "../../../../Downloads/app"
+		}
+	],
+	"settings": {}
+}

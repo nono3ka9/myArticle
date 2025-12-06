@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+        <head>
+            <title>管理画面</title>
+            <%= csrf_meta_tags %>
+            <%= csp_meta_tag %>
+        </head>
+
+    <body>
+        <header>
+            <h1>管理画面</h1>
+            <nav>
+                <%= link_to "ユーザー一覧", admin_users_path %> |
+                <%= link_to "トップへ戻る", root_path %>
+            </nav>
+            <hr>
+        </header>
+
+        <%= yield %>
+    </body>
+</html>
