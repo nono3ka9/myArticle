@@ -37,7 +37,7 @@
         <% end %>
       </div>
 
-      <%# 要約（任意） %>
+      <% # 要約（任意） %>
       <% summary_error = article.errors.include?(:summary) %>
       <div>
         <%= f.label :summary, article.class.human_attribute_name(:summary), class: "form-label" %>
@@ -61,3 +61,28 @@
     </div>
   </div>
 <% end %>
+
+<% #画像 %>
+<% image_error = article.errors.include?(:image) %>
+<div>
+  <%= f.label :image,
+    article.class.human_attribute_name(:image),
+    class: "form-label" %>
+
+  <%= f.file_field :image,
+    class: ["form-control", ("is-invalid" if image_error)].compact.join(" "),
+    accept: "image/png,image/jpeg" %>
+
+  <% if image_error %>
+    <div class="invalid-feedback">
+      <%= article.errors.full_messages_for(:image).first %>
+    </div>
+  <% end %>
+
+  <% if article.image.attached? %>
+    <div class="mt-2">
+      <small class="text-muted">現在の画像</small><br>
+      <%= image_tag article.image, class: "img-fluid rounded", style: "max-height: 200px;" %>
+    </div>
+  <% end %>
+</div>

@@ -13,4 +13,8 @@ class ApplicationController < ActionController::Base
   def layout_by_resource
     devise_controller? ? "devise" : "application"
   end
+
+  def article_params
+    params.expect(article: [:title, :body, :summary, :image])
+  end
 end
