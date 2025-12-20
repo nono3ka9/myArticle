@@ -37,7 +37,7 @@
         <% end %>
       </div>
 
-      <% # 要約（任意） %>
+      <%# 要約（任意） %>
       <% summary_error = article.errors.include?(:summary) %>
       <div>
         <%= f.label :summary, article.class.human_attribute_name(:summary), class: "form-label" %>
@@ -47,6 +47,49 @@
         <% if summary_error %>
           <div class="invalid-feedback">
             <%= article.errors.full_messages_for(:summary).first %>
+          </div>
+        <% end %>
+      </div>
+
+
+      <%# 画像（任意） %>
+      <% image_error = article.errors.include?(:image) %>
+      <div>
+        <%= f.label :image,
+              article.class.human_attribute_name(:image),
+              class: "form-label" %>
+
+        <%= f.file_field :image,
+              class: ["form-control", ("is-invalid" if image_error)].compact.join(" "),
+              accept: "image/png,image/jpeg" %>
+
+        <% if image_error %>
+          <div class="invalid-feedback">
+            <%= article.errors.full_messages_for(:image).first %>
+          </div>
+        <% end %>
+
+        <div class="mt-3">
+          <%= f.label :tag_ids, "タグ", class: "form-label mb-2" %>
+
+          <div class="d-flex flex-wrap gap-2">
+            <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name do |b| %>
+              <div class="form-check form-check-inline m-0">
+                <%= b.check_box class: "form-check-input" %>
+                <%= b.label class: "form-check-label badge text-bg-light border rounded-pill px-3 py-2" %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="form-text mt-2">
+            複数選択できます
+          </div>
+        </div>
+
+        <% if article.image.attached? %>
+          <div class="mt-2">
+            <small class="text-muted">現在の画像</small><br>
+            <%= image_tag article.image, class: "img-fluid rounded", style: "max-height: 200px;" %>
           </div>
         <% end %>
       </div>
@@ -61,28 +104,3 @@
     </div>
   </div>
 <% end %>
-
-<% #画像 %>
-<% image_error = article.errors.include?(:image) %>
-<div>
-  <%= f.label :image,
-    article.class.human_attribute_name(:image),
-    class: "form-label" %>
-
-  <%= f.file_field :image,
-    class: ["form-control", ("is-invalid" if image_error)].compact.join(" "),
-    accept: "image/png,image/jpeg" %>
-
-  <% if image_error %>
-    <div class="invalid-feedback">
-      <%= article.errors.full_messages_for(:image).first %>
-    </div>
-  <% end %>
-
-  <% if article.image.attached? %>
-    <div class="mt-2">
-      <small class="text-muted">現在の画像</small><br>
-      <%= image_tag article.image, class: "img-fluid rounded", style: "max-height: 200px;" %>
-    </div>
-  <% end %>
-</div>

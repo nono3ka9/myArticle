@@ -1,32 +1,40 @@
 <div class="container mt-4 mb-4">
 
   <% provide :title, "記事詳細｜#{@article.title}" %>
-
-<% #--- 記事本文:カード化 --- %>
+  <%# --- 記事本文：カード化 --- %>
   <div class="card mb-4">
     <div class="card-body">
 
-      <% # ▼ 記事画像(あれば表示) %>
+      <%# ▼ 記事画像（あれば表示） %>
       <% if @article.image.attached? %>
         <div class="mb-3 text-center">
           <%= image_tag @article.image,
-              class: "img-fluid rounded border",
-              style: "max-height: 420px;" %>
+                class: "img-fluid rounded border",
+                style: "max-height: 420px;" %>
         </div>
       <% end %>
 
       <%= render @article %>
+
+      <div class="mt-2 d-flex flex-wrap gap-2">
+        <% color_map = %w[text-bg-primary text-bg-success text-bg-info text-bg-warning text-bg-danger text-bg-secondary] %>
+        <% @article.tags.each do |tag| %>
+          <% color = color_map[tag.id % color_map.length] %>
+          <span class="badge rounded-pill <%= color %> px-3 py-2"><%= tag.name %></span>
+        <% end %>
+      </div>
+
     </div>
   </div>
 
-  <% # --- コメント見出し（件数バッジ） --- %>
+  <%# --- コメント見出し（件数バッジ） --- %>
   <div class="d-flex align-items-center justify-content-between mb-2">
     <h2 class="h5 mb-0">
       コメント <span class="badge bg-secondary"><%= @article.comments.count %></span>
     </h2>
   </div>
 
-  <% # --- コメント一覧：最新→古い順、List Group で整列 --- %>
+  <%# --- コメント一覧：最新→古い順、List Group で整列 --- %>
   <% if @article.comments.any? %>
     <ul class="list-group mb-4">
       <% @article.comments.order(created_at: :desc).each do |comment| %>
@@ -50,12 +58,12 @@
     <div class="alert alert-light border mb-4">まだコメントはありません。最初のコメントを投稿しましょう。</div>
   <% end %>
 
-  <% # --- コメント投稿フォーム：カード化 --- %>
+  <%# --- コメント投稿フォーム：カード化 --- %>
   <div class="card mb-4">
     <div class="card-header">新しいコメント</div>
     <div class="card-body">
 
-      <% # ▼ バリデーションエラー表示 %>
+      <%# ▼ バリデーションエラー表示 %>
       <% if @comment && @comment.errors.any? %>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
           <strong>入力エラーがあります：</strong>
@@ -82,7 +90,7 @@
     </div>
   </div>
 
-  <% # --- 下部アクション：ボタン整列・配色統一 --- %>
+  <%# --- 下部アクション：ボタン整列・配色統一 --- %>
   <div class="d-flex gap-2">
     <%= link_to "この投稿を編集する", edit_article_path(@article), class: "btn btn-outline-secondary" %>
     <%= link_to "一覧に戻る", articles_path, class: "btn btn-outline-secondary" %>
